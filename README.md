@@ -22,14 +22,26 @@ Detect malicious behavior patterns like:
 
 ---
 
-## Project Structure
-tracexec/
-├── logs/ # Raw Sysmon logs
-├── scripts/ # Dropper simulation
-├── rules/ # Detection rules (Sigma, YARA)
-├── analysis/ # Timeline, IOC mapping
-├── demo/ # Screencast or walkthroughs
-└── README.md
+logs/
+↳ Contains raw Sysmon logs (sysmon_log.evtx)
+
+scripts/
+↳ Dropper simulation script (dropper_sim.py)
+
+rules/
+↳ Detection rules — Sigma and YARA (sigma-shadowdrop.yml, yara-shadowfile.yar)
+
+analysis/
+↳ Timeline of events, IOC mapping, attack flow notes
+
+demo/
+↳ Optional screencast, walkthrough .gif or .mp4
+
+processbrief.md
+↳ Full Phase 1 setup documentation (you’ll upload the writeup here)
+
+README.md
+↳ Project overview, usage, goals
 
 ---
 
