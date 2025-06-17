@@ -24,22 +24,16 @@ Detect malicious behavior patterns like:
 
 logs/
 ↳ Contains raw Sysmon logs (sysmon_log.evtx)
-
 scripts/
 ↳ Dropper simulation script (dropper_sim.py)
-
 rules/
 ↳ Detection rules — Sigma and YARA (sigma-shadowdrop.yml, yara-shadowfile.yar)
-
 analysis/
 ↳ Timeline of events, IOC mapping, attack flow notes
-
 demo/
 ↳ Optional screencast, walkthrough .gif or .mp4
-
 processbrief.md
-↳ Full Phase 1 setup documentation (you’ll upload the writeup here)
-
+↳ Fullsetup documentation 
 README.md
 ↳ Project overview, usage, goals
 
