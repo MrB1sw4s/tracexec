@@ -1,0 +1,78 @@
+
+# ==============================
+# Rule 1: Execution from AppData
+# ==============================
+title: Suspicious EXE Execution from AppData (Python Dropper)
+id: efd829a4-cc39-11ec-9d64-0242ac120002
+description: Detects execution of executables from user AppData directories, especially launched by python
+status: experimental
+author: MrB1sw4s
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|contains: '\AppData\'
+    ParentImage|endswith: 'python.exe'
+  condition: selection
+level: high
+tags:
+  - attack.execution
+  - attack.t1059.006
+
+---
+
+# ==============================
+# Rule 2: Registry Persistence
+# ==============================
+title: Registry Autorun Persistence via AppData Executable
+id: 620ff2e8-cc3a-11ec-9d64-0242ac120002
+description: Detects suspicious registry autorun keys that point to executables dropped in AppData
+status: experimental
+author: MrB1sw4s
+logsource:
+  product: windows
+  service: sysmon
+  category: registry_set
+detection:
+  selection:
+    EventType: SetValue
+    TargetObject|contains: '\CurrentVersion\Run'
+    Details|contains: '\AppData\'
+  condition: selection
+level: high
+tags:
+  - attack.persistence
+  - attack.t1547.001
+  - attack.execution
+
+---
+
+# ==============================
+# Rule 3: Executable Dropped
+# ==============================
+title: Executable Dropped in AppData by Python or Script Engine
+id: 78a218e0-cc3b-11ec-9d64-0242ac120002
+description: Detects when a .exe file is written to AppData by scripting interpreters
+status: experimental
+author: MrB1sw4s
+logsource:
+  product: windows
+  service: sysmon
+  category: file_create
+detection:
+  selection:
+    TargetFilename|contains: '\AppData\'
+    TargetFilename|endswith: '.exe'
+    Image|endswith:
+      - 'python.exe'
+      - 'powershell.exe'
+      - 'wscript.exe'
+      - 'cscript.exe'
+  condition: selection
+level: high
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1059
