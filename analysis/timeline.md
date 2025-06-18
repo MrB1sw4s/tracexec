@@ -14,6 +14,7 @@
  - Target Filename: C:\\Users\\vboxuser\\AppData\\Roaming\\WindowsUpdate.exe
  - Sysmon Event ID: 11
  - Detection Rule: Executable Dropped in AppData by Python
+
 2025-06-18 03:30:17.805
  - Action: Registry key added for persistence
  - Process: python.exe
@@ -21,6 +22,7 @@
  - Payload Path: C:\\Users\\vboxuser\\AppData\\Roaming\\WindowsUpdate.exe
  - Sysmon Event ID: 13
  - Detection Rule: Registry Autorun via AppData EXE
+
 2025-06-18 03:30:17.838
  - Action: Malware executed from drop location
  - Process: WindowsUpdate.exe
