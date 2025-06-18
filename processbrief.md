@@ -89,3 +89,187 @@ This mimicked the behavior of a typical first-stage dropper (e.g., AgentTesla, L
 | 1        | Execution of dropped binary from AppData     |
 
 ---
+
+---
+
+# Phase 2 – Detection Engineering (Sigma Rules)
+
+**Objective:** Build real-world Sigma detection rules based on behavioral patterns from our dropper simulation logs.
+
+---
+
+## Behavioral Summary
+
+During Phase 1, our dropper performed the following:
+
+1. Dropped a renamed binary into `AppData`:
+   ```
+   C:\Users\vboxuser\AppData\Roaming\WindowsUpdate.exe
+   ```
+2. Set a persistence key in:
+   ```
+   HKU\S-1-5-21-...\CurrentVersion\Run\FakeUpdater
+   ```
+3. Executed the dropped binary using:
+   ```
+   Parent: C:\Users\vboxuser\AppData\Local\Programs\Python\Python313\python.exe
+   ```
+
+This mimics the behavior of stage-1 commodity malware.
+
+---
+
+## Goal: Build Sigma Rules for the Chain
+
+We crafted 3 Sigma rules based on:
+
+| Event Type | Goal |
+|------------|------|
+| **Event ID 11** | File dropped to disk (AppData) |
+| **Event ID 13** | Registry persistence set |
+| **Event ID 1**  | Executed dropped payload |
+
+---
+
+## Rule 1 – Execution from AppData
+
+### Sample Log:
+
+```
+UtcTime:        2025-06-18 03:30:17.838
+Image:          C:\Users\vboxuser\AppData\Roaming\WindowsUpdate.exe
+ParentImage:    C:\Users\vboxuser\AppData\Local\Programs\Python\Python313\python.exe
+CommandLine:    C:\Users\vboxuser\AppData\Roaming\WindowsUpdate.exe
+```
+
+### Sigma Rule:
+
+```yaml
+title: Suspicious EXE Execution from AppData (Python Dropper)
+id: efd829a4-cc39-11ec-9d64-0242ac120002
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|contains: '\\AppData\\'
+    ParentImage|endswith: 'python.exe'
+  condition: selection
+level: high
+```
+
+---
+
+## Rule 2 – Registry Persistence Set
+Sysmon Event ID 13 – Registry Value Set
+
+Triggered when any value in the Windows Registry is added or modified.
+
+It tells you:
+
+-Who modified the registry (Image, User)
+
+-What was modified (TargetObject)
+
+-What was written (Details)
+
+Why Is This Dangerous?
+-Persistence is one of the most important stages of an attack chain.
+-The attacker wants the malware to stay active even after reboot or logout.
+
+ Registry autorun is popular because:
+-It’s silent (no popups, no UAC)
+
+-Works at both user-level (HKCU) and system-level (HKLM)
+
+-Can point to any file path (e.g., %AppData%, %Temp%, .bat, .exe, .vbs)
+
+-Doesn’t require admin if using HKCU
+
+### Sample Log:
+
+```
+UtcTime:        2025-06-18 03:30:17.805
+Image:          C:\Users\vboxuser\AppData\Local\Programs\Python\Python313\python.exe
+TargetObject:   HKU\...\CurrentVersion\Run\FakeUpdater
+Details:        C:\Users\vboxuser\AppData\Roaming\WindowsUpdate.exe
+RuleName:	T1060,RunKey → 🔥 This is an ATT&CK-mapped detection!
+
+```
+
+### Sigma Rule:
+
+```yaml
+title: Registry Autorun Persistence via AppData Executable
+id: 620ff2e8-cc3a-11ec-9d64-0242ac120002
+logsource:
+  product: windows
+  service: sysmon
+  category: registry_set
+detection:
+  selection:
+    EventType: SetValue
+    TargetObject|contains: '\\CurrentVersion\\Run'
+    Details|contains: '\\AppData\\'
+  condition: selection
+level: high
+```
+ Why This Is Strong:
+It doesn’t depend on exact SID (HKU\S-1-5-...) or username
+
+Works for HKCU, HKLM, or SID-based HKU
+
+Catches malware that installs itself in user space and registers autorun
+HKCU\Software\Microsoft\Windows\CurrentVersion\Run = User-level autorun
+
+HKLM\... = Machine-level autorun
+
+---
+
+## 🛠 Rule 3 – File Dropped in AppData
+
+### Sample Log:
+
+```
+UtcTime:         2025-06-18 03:30:17.767
+Image:           C:\Users\vboxuser\AppData\Local\Programs\Python\Python313\python.exe
+TargetFilename:  C:\Users\vboxuser\AppData\Roaming\WindowsUpdate.exe
+```
+
+### Sigma Rule:
+
+```yaml
+title: Executable Dropped in AppData by Python or Script Engine
+id: 78a218e0-cc3b-11ec-9d64-0242ac120002
+logsource:
+  product: windows
+  service: sysmon
+  category: file_create
+detection:
+  selection:
+    TargetFilename|contains: '\\AppData\\'
+    TargetFilename|endswith: '.exe'
+    Image|endswith:
+      - 'python.exe'
+      - 'powershell.exe'
+      - 'wscript.exe'
+      - 'cscript.exe'
+  condition: selection
+level: high
+```
+
+---
+
+## What We Learned
+
+- **AppData writes** by scripting engines are rarely legitimate.
+- **Registry autorun keys** pointing to `AppData` are high-confidence indicators.
+- **Execution from AppData** chained to these behaviors forms a reliable malware pattern.
+
+We now have a **complete detection chain** for a real dropper:
+```
+Drop → Persist → Execute
+```
+
+---
