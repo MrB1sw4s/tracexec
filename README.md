@@ -60,8 +60,8 @@ README.md
 
 ## Status
 
-✅ Phase 1: Simulate malware behavior → capture Sysmon logs COMPLETE  
-🔄 Phase 2: Detection Engineering (Sigma Rules) COMPLETE
-🚧 Phase 3: Packaging `tracexec()` into CLI/tool coming next
+Phase 1: Simulate malware behavior → capture Sysmon logs COMPLETE  
+Phase 2: Detection Engineering (Sigma Rules) COMPLETE
+Phase 3: Packaging `tracexec()` into CLI/tool coming next
 
 ---
