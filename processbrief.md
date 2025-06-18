@@ -168,24 +168,26 @@ Triggered when any value in the Windows Registry is added or modified.
 
 It tells you:
 
--Who modified the registry (Image, User)
+ - Who modified the registry (Image, User)
 
--What was modified (TargetObject)
+ - What was modified (TargetObject)
 
--What was written (Details)
+ - What was written (Details)
 
 Why Is This Dangerous?
--Persistence is one of the most important stages of an attack chain.
--The attacker wants the malware to stay active even after reboot or logout.
+
+ - Persistence is one of the most important stages of an attack chain.
+ - The attacker wants the malware to stay active even after reboot or logout.
 
  Registry autorun is popular because:
--It’s silent (no popups, no UAC)
 
--Works at both user-level (HKCU) and system-level (HKLM)
+ - It’s silent (no popups, no UAC)
 
--Can point to any file path (e.g., %AppData%, %Temp%, .bat, .exe, .vbs)
+ - Works at both user-level (HKCU) and system-level (HKLM)
 
--Doesn’t require admin if using HKCU
+ - Can point to any file path (e.g., %AppData%, %Temp%, .bat, .exe, .vbs)
+
+ - Doesn’t require admin if using HKCU
 
 ### Sample Log:
 
@@ -215,15 +217,16 @@ detection:
   condition: selection
 level: high
 ```
- Why This Is Strong:
-It doesn’t depend on exact SID (HKU\S-1-5-...) or username
+Why This Is Strong:
 
-Works for HKCU, HKLM, or SID-based HKU
+ - It doesn’t depend on exact SID (HKU\S-1-5-...) or username
 
-Catches malware that installs itself in user space and registers autorun
-HKCU\Software\Microsoft\Windows\CurrentVersion\Run = User-level autorun
+ - Works for HKCU, HKLM, or SID-based HKU
 
-HKLM\... = Machine-level autorun
+ - Catches malware that installs itself in user space and registers autorun
+ - HKCU\Software\Microsoft\Windows\CurrentVersion\Run = User-level autorun
+
+ - HKLM\... = Machine-level autorun
 
 ---
 
