@@ -274,5 +274,5 @@ We now have a **complete detection chain** for a real dropper:
 ```
 Drop → Persist → Execute
 ```
-Read timeline at [Timeline](https://github.com/MrB1sw4s/tracexec/blob/main/analysis/timeline.md)
+### Read [Timeline](https://github.com/MrB1sw4s/tracexec/blob/main/analysis/timeline.md) and [IOCs](https://github.com/MrB1sw4s/tracexec/blob/main/analysis/iocs.md)
 ---
