@@ -1,5 +1,5 @@
 
-# 🧨 IOCs – ShadowDrop Operation
+# IOCs – ShadowDrop Operation
 
 This file lists all Indicators of Compromise (IOCs) observed during the ShadowDrop simulation. 
 
@@ -24,7 +24,7 @@ These can be used for threat hunting, enrichment, and retroactive detection.
 
 ---
 
-## 📁 Dropped Executable
+## Dropped Executable
 
 | Indicator Type | Value |
 |----------------|-------|
@@ -38,7 +38,7 @@ These can be used for threat hunting, enrichment, and retroactive detection.
 
 ---
 
-## 🧬 Registry Keys
+## Registry Keys
 
 | Key Path | Details |
 |----------|---------|
@@ -46,7 +46,7 @@ These can be used for threat hunting, enrichment, and retroactive detection.
 
 ---
 
-## 🧠 Related Processes
+## Related Processes
 
 | Executable | Role        | Path |
 |------------|-------------|------|
@@ -55,7 +55,7 @@ These can be used for threat hunting, enrichment, and retroactive detection.
 
 ---
 
-## 📌 User Context
+## User Context
 
 | Field | Value |
 |-------|-------|
@@ -65,7 +65,7 @@ These can be used for threat hunting, enrichment, and retroactive detection.
 
 ---
 
-## 🔗 MITRE ATT&CK TTPs
+## MITRE ATT&CK TTPs
 
 | Tactic | Technique | ID |
 |--------|-----------|----|
