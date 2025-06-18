@@ -45,7 +45,7 @@
 |Persistence  |  `Registry Autorun Persistence via AppData Executable`  |  T1547.001 (Autorun Registry)  |
 |Execution  |  `Suspicious EXE Execution from AppData` |  T1055 (Execution Flow)  |
 
-###Outcome
+### Outcome
  - All three stages of the dropper chain were detected via custom Sigma rules.
  - Logs were exported and Sigma rules validated.
  - Detection logic is now reusable across similar threats.
