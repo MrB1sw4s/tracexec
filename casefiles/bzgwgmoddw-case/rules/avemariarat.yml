@@ -1,0 +1,28 @@
+title: Suspicious Payload Drop and Execution from Temp
+id: d8c73e0c-263c-11ef-8fa5-0242ac120002
+status: experimental
+description: Detects suspicious execution of a payload dropped into %Temp% by a parent dropper, especially renamed legitimate binaries and execution under user context.
+author: MrB1sw4s
+date: 2025-06-23
+references:
+  - https://attack.mitre.org/techniques/T1105/
+  - https://attack.mitre.org/techniques/T1547.009/
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    ParentImage|endswith: 'RAT.exe'
+    Image|contains: '\\Temp\\'
+    Image|endswith: '.exe'
+  condition: selection
+fields:
+  - UtcTime
+  - Image
+  - ParentImage
+  - CommandLine
+  - User
+falsepositives:
+  - Legitimate installers dropping executables into Temp directory
+level: high

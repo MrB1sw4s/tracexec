@@ -26,6 +26,7 @@
 - Cloned SwiftOnSecurity’s Sysmon config:
   ```bash
   git clone https://github.com/SwiftOnSecurity/sysmon-config.git
+  cd sysmon-config
   ```
 - Installed Sysmon:
   ```bash
