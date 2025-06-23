@@ -39,12 +39,11 @@ Detonating a **dropper/payload execution chain**(AveMariaRAT) on a controlled Wi
      ```
      Registry Keys: \REGISTRY\A\{547415f1-6bd6-b094-b04e-f658d9b93e22}\Root\InventoryApplicationFile\bzgwgmoddw.exe|d2634becc9c668fa\LowerCaseLongPath
      Details: c:\users\vboxuser\desktop\extracted_payload\bzgwgmoddw.exe
-
-    Registry Keys: \REGISTRY\A\{547415f1-6bd6-b094-b04e-f658d9b93e22}\Root\InventoryApplicationFile\bzgwgmoddw.exe|d2634becc9c668fa\Publisher
+     Registry Keys: \REGISTRY\A\{547415f1-6bd6-b094-b04e-f658d9b93e22}\Root\InventoryApplicationFile\bzgwgmoddw.exe|d2634becc9c668fa\Publisher
      Details: (Empty)
      ```
-   - Persistence/Inventory Indicators — RAT is being registered under Windows Application Inventory (InventoryApplicationFile), often part of AppCompat or Application Experience telemetry.
 
+   - Persistence/Inventory Indicators — RAT is being registered under Windows Application Inventory (InventoryApplicationFile), often part of AppCompat or Application Experience telemetry.
    - svchost.exe is the one making these reg entries — suspicious behavior for a system process.
    - No observable network activity (sandbox isolated).
 
